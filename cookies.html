@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CookZen</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f8f8f8;
+    }
+
+    body.red .footer {
+      background-color: #db3131;
+    }
+    body.orange .footer {
+      background-color: #ffb74d;
+    }
+    body.blue .footer {
+      background-color: #64b5f6;
+    }
+    body.purple .footer {
+      background-color: #ba68c8;
+    }
+    
+    .footer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: #db3131;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      z-index: 10;
+    }
+    .barre {
+      position: fixed;
+      top: 120px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: black;
+      z-index: 9;
+    }
+    .contenu {
+      margin-top: 140px;
+      padding: 20px;
+      font-size: 18px;
+    }
+    .cookzen-title {
+      position: absolute;
+      bottom: 10px;
+      left: 20px;
+      font-size: 48px;
+      font-weight: bold;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="footer">
+    <div class="cookzen-title">CookZen</div>
+  </div>
+  <div class="barre"></div>
+  <div class="contenu">
+    <p><strong>Préparer la pâte à cookies</strong></p>
+    <p>Dans un bol, mélangez le beurre mou et le sucre jusqu’à obtenir une texture crémeuse.<br>
+    Ajoutez l’œuf et la vanille, mélangez bien.<br>
+    Incorporez la farine, la levure et le sel.<br>
+    Ajoutez les pépites de chocolat.</p>
+
+    <p><strong>Former les cookies</strong></p>
+    <p>Préchauffez le four à 180 °C.<br>
+    Faisez des boules de pâte avec une cuillère et déposez-les sur une plaque recouverte de papier cuisson, en les espaçant bien.</p>
+
+    <p><strong>Cuisson</strong></p>
+    <p>Enfournez pendant 10 à 12 minutes, jusqu’à ce que les bords soient dorés.<br>
+    Laissez refroidir 5 à 10 minutes avant de les manipuler</p>
+
+  </div>
+    <script>
+        const savedTheme = localStorage.getItem('cookzenTheme');
+    if (savedTheme) {
+      document.body.className = savedTheme;
+    }
+  </script>
+</body>
+</html>

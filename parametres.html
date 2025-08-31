@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CookZen</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f8f8f8;
+      padding-bottom: 80px;
+    }
+
+    body.red .footer {
+      background-color: #db3131;
+    }
+
+    body.orange .footer {
+      background-color: #ffb74d;
+    }
+
+    body.blue .footer {
+      background-color: #64b5f6;
+    }
+
+    body.purple .footer {
+      background-color: #ba68c8;
+    }
+
+    .footer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 120px;
+      background: #db3131;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      z-index: 10;
+    }
+
+    .cookzen-title {
+      position: absolute;
+      bottom: 10px;
+      left: 20px;
+      font-size: 48px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .barre {
+      position: fixed;
+      top: 120px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: black;
+      z-index: 9;
+    }
+
+    body > main {
+      margin: 140px 20px 100px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+
+    .option {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #eeeeee;
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.2rem;
+      box-shadow: inset 2px 2px 6px #dcdcdc,
+                  inset -2px -2px 6px #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1),
+                  inset 2px 2px 6px #dcdcdc,
+                  inset -2px -2px 6px #ffffff;
+    }
+
+    .option label:first-child {
+      font-size: 1.1rem;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4caf50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    input:checked + .slider.theme-red {
+      background-color: #db3131;
+    }
+
+    input:checked + .slider.theme-orange {
+      background-color: #ffb74d;
+    }
+
+    input:checked + .slider.theme-blue {
+      background-color: #64b5f6;
+    }
+
+    input:checked + .slider.theme-purple {
+      background-color: #ba68c8;
+    }
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #fff;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 20;
+}
+
+.nav-btn {
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: 34px;
+  cursor: pointer;
+  color: #8f8989;
+}
+
+.nav-btn:focus {
+  outline: none;
+}
+
+    @media (max-width: 480px) {
+      .footer { 
+        font-size: 24px; 
+        height: 110px; 
+      }
+      .barre { 
+        top: 110px; 
+      }
+      body > main {
+        margin: 130px 15px 90px;
+      }
+      .cookzen-title {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="footer">
+    <div class="cookzen-title">CookZen</div>
+  </div>
+
+  <div class="barre"></div>
+
+  <main>
+    <h1>Choisir un thème</h1>
+
+    <div class="option">
+      <label for="theme-red">Rouge</label>
+      <label class="switch">
+        <input type="radio" name="theme" id="theme-red" value="red" />
+        <span class="slider theme-red"></span>
+      </label>
+    </div>
+
+    <div class="option">
+      <label for="theme-orange">Orange</label>
+      <label class="switch">
+        <input type="radio" name="theme" id="theme-orange" value="orange" />
+        <span class="slider theme-orange"></span>
+      </label>
+    </div>
+
+    <div class="option">
+      <label for="theme-blue">Bleu</label>
+      <label class="switch">
+        <input type="radio" name="theme" id="theme-blue" value="blue" />
+        <span class="slider theme-blue"></span>
+      </label>
+    </div>
+
+    <div class="option">
+      <label for="theme-purple">Violet</label>
+      <label class="switch">
+        <input type="radio" name="theme" id="theme-purple" value="purple" />
+        <span class="slider theme-purple"></span>
+      </label>
+    </div>
+  </main>
+
+<div id="payrecettes"></div>
+
+  <div class="bottom-nav">
+    <a class="nav-btn" href="index.html">🏠</a>
+    <a class="nav-btn" href="favoris.html">❤️</a>
+    <a class="nav-btn" href="parametres.html">⚙️</a>
+  </div>
+
+<script>
+
+  function applyTheme(theme) {
+    document.body.className = theme;
+    if (theme) {
+      localStorage.setItem('cookzenTheme', theme);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const inputs = document.querySelectorAll('input[name="theme"]');
+    const savedTheme = localStorage.getItem('cookzenTheme');
+    if (savedTheme) {
+      const matchingInput = document.querySelector(`input[value="${savedTheme}"]`);
+      if (matchingInput) {
+        matchingInput.checked = true;
+        applyTheme(savedTheme);
+      }
+    }
+
+    inputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.checked) {
+          applyTheme(input.value);
+        }
+      });
+    });
+
+    document.querySelectorAll('.option label:first-child').forEach(label => {
+      label.addEventListener('click', () => {
+        const input = document.querySelector(`#${label.getAttribute('for')}`);
+        if (input) {
+          input.checked = true;
+          applyTheme(input.value);
+        }
+      });
+    });
+  });
+
+  /**
+ * Define the version of the Google Pay API referenced when creating your
+ * configuration
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|apiVersion in PaymentDataRequest}
+ */
+const baseRequest = {
+  apiVersion: 2,
+  apiVersionMinor: 0
+};
+
+/**
+ * Card networks supported by your site and your gateway
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+ * @todo confirm card networks supported by your site and gateway
+ */
+const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+
+/**
+ * Card authentication methods supported by your site and your gateway
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+ * @todo confirm your processor supports Android device tokens for your
+ * supported card networks
+ */
+const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+/**
+ * Identify your gateway and your site's gateway merchant identifier
+ *
+ * The Google Pay API response will return an encrypted payment method capable
+ * of being charged by a supported gateway after payer authorization
+ *
+ * @todo check with your gateway on the parameters to pass
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#gateway|PaymentMethodTokenizationSpecification}
+ */
+const tokenizationSpecification = {
+  type: 'PAYMENT_GATEWAY',
+  parameters: {
+    'gateway': 'example',
+    'gatewayMerchantId': 'exampleGatewayMerchantId'
+  }
+};
+
+/**
+ * Describe your site's support for the CARD payment method and its required
+ * fields
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+ */
+const baseCardPaymentMethod = {
+  type: 'CARD',
+  parameters: {
+    allowedAuthMethods: allowedCardAuthMethods,
+    allowedCardNetworks: allowedCardNetworks
+  }
+};
+
+/**
+ * Describe your site's support for the CARD payment method including optional
+ * fields
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
+ */
+const cardPaymentMethod = Object.assign(
+  {},
+  baseCardPaymentMethod,
+  {
+    tokenizationSpecification: tokenizationSpecification
+  }
+);
+
+/**
+ * An initialized google.payments.api.PaymentsClient object or null if not yet set
+ *
+ * @see {@link getGooglePaymentsClient}
+ */
+let paymentsClient = null;
+
+/**
+ * Configure your site's support for payment methods supported by the Google Pay
+ * API.
+ *
+ * Each member of allowedPaymentMethods should contain only the required fields,
+ * allowing reuse of this base request when determining a viewer's ability
+ * to pay and later requesting a supported payment method
+ *
+ * @returns {object} Google Pay API version, payment methods supported by the site
+ */
+function getGoogleIsReadyToPayRequest() {
+  return Object.assign(
+      {},
+      baseRequest,
+      {
+        allowedPaymentMethods: [baseCardPaymentMethod]
+      }
+  );
+}
+
+/**
+ * Configure support for the Google Pay API
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|PaymentDataRequest}
+ * @returns {object} PaymentDataRequest fields
+ */
+function getGooglePaymentDataRequest() {
+  const paymentDataRequest = Object.assign({}, baseRequest);
+  paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
+  paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+  paymentDataRequest.merchantInfo = {
+    // @todo a merchant ID is available for a production environment after approval by Google
+    // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
+    // merchantId: '12345678901234567890',
+    merchantName: 'Example Merchant'
+  };
+  return paymentDataRequest;
+}
+
+/**
+ * Return an active PaymentsClient or initialize
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/client#PaymentsClient|PaymentsClient constructor}
+ * @returns {google.payments.api.PaymentsClient} Google Pay API client
+ */
+function getGooglePaymentsClient() {
+  if ( paymentsClient === null ) {
+    paymentsClient = new google.payments.api.PaymentsClient({environment: 'TEST'});
+  }
+  return paymentsClient;
+}
+
+/**
+ * Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
+ *
+ * Display a Google Pay payment button after confirmation of the viewer's
+ * ability to pay.
+ */
+function onGooglePayLoaded() {
+  const paymentsClient = getGooglePaymentsClient();
+  paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
+      .then(function(response) {
+        if (response.result) {
+          addGooglePayButton();
+          // @todo prefetch payment data to improve performance after confirming site functionality
+          // prefetchGooglePaymentData();
+        }
+      })
+      .catch(function(err) {
+        // show error in developer console for debugging
+        console.error(err);
+      });
+}
+
+/**
+ * Add a Google Pay purchase button alongside an existing checkout button
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#ButtonOptions|Button options}
+ * @see {@link https://developers.google.com/pay/api/web/guides/brand-guidelines|Google Pay brand guidelines}
+ */
+function addGooglePayButton() {
+  const paymentsClient = getGooglePaymentsClient();
+  const button =
+      paymentsClient.createButton({
+        onClick: onGooglePaymentButtonClicked,
+        allowedPaymentMethods: [baseCardPaymentMethod]
+      });
+  document.getElementById('payrecettes').appendChild(button);
+}
+
+/**
+ * Provide Google Pay API with a payment amount, currency, and amount status
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#TransactionInfo|TransactionInfo}
+ * @returns {object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
+ */
+function getGoogleTransactionInfo() {
+  return {
+    countryCode: 'US',
+    currencyCode: 'USD',
+    totalPriceStatus: 'FINAL',
+    // set to cart total
+    totalPrice: '0.99'
+  };
+}
+
+/**
+ * Prefetch payment data to improve performance
+ *
+ * @see {@link https://developers.google.com/pay/api/web/reference/client#prefetchPaymentData|prefetchPaymentData()}
+ */
+function prefetchGooglePaymentData() {
+  const paymentDataRequest = getGooglePaymentDataRequest();
+  // transactionInfo must be set but does not affect cache
+  paymentDataRequest.transactionInfo = {
+    totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
+    currencyCode: 'USD'
+  };
+  const paymentsClient = getGooglePaymentsClient();
+  paymentsClient.prefetchPaymentData(paymentDataRequest);
+}
+
+/**
+ * Show Google Pay payment sheet when Google Pay payment button is clicked
+ */
+function onGooglePaymentButtonClicked() {
+  const paymentDataRequest = getGooglePaymentDataRequest();
+  paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
+
+  const paymentsClient = getGooglePaymentsClient();
+  paymentsClient.loadPaymentData(paymentDataRequest)
+      .then(function(paymentData) {
+        // handle the response
+        processPayment(paymentData);
+      })
+      .catch(function(err) {
+        // show error in developer console for debugging
+        console.error(err);
+      });
+}
+/**
+ * Process payment data returned by the Google Pay API
+ *
+ * @param {object} paymentData response from Google Pay API after user approves payment
+ * @see {@link https://developers.google.com/pay/api/web/reference/response-objects#PaymentData|PaymentData object reference}
+ */
+function processPayment(paymentData) {
+  // show returned data in developer console for debugging
+    console.log(paymentData);
+  // @todo pass payment token to your gateway to process payment
+  // @note DO NOT save the payment credentials for future transactions,
+  // unless they're used for merchant-initiated transactions with user
+  // consent in place.
+  paymentToken = paymentData.paymentMethodData.tokenizationData.token;
+}</script>
+<script async
+  src="https://pay.google.com/gp/p/js/pay.js"
+  onload="onGooglePayLoaded()">
+
+</script>
+
+</body>
+</html>

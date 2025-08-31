@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CookZen</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f8f8f8;
+    }
+
+    body.red .footer {
+      background-color: #db3131;
+    }
+    body.orange .footer {
+      background-color: #ffb74d;
+    }
+    body.blue .footer {
+      background-color: #64b5f6;
+    }
+    body.purple .footer {
+      background-color: #ba68c8;
+    }
+    
+    .footer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: #db3131;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      z-index: 10;
+    }
+    .barre {
+      position: fixed;
+      top: 120px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: black;
+      z-index: 9;
+    }
+    .contenu {
+      margin-top: 140px;
+      padding: 20px;
+      font-size: 18px;
+    }
+    .cookzen-title {
+      position: absolute;
+      bottom: 10px;
+      left: 20px;
+      font-size: 48px;
+      font-weight: bold;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="footer">
+    <div class="cookzen-title">CookZen</div>
+  </div>
+  <div class="barre"></div>
+  <div class="contenu">
+      <p><strong>Préparer l’appareil</strong></p>
+  <p>Préchauffez votre four à 180 °C.<br>
+  Dans un saladier, fouettez les œufs avec le sucre jusqu’à ce que ça blanchisse.<br>
+  Ajoutez le beurre fondu, le jus et le zeste du citron.</p>
+
+  <p><strong>Incorporer les poudres</strong></p>
+  <p>Ajoutez la farine de riz, la poudre d’amande, la fécule, la levure et le sel.<br>
+  Mélangez jusqu’à l'obtention d’une pâte lisse.</p>
+
+  <p><strong>Cuisson</strong></p>
+  <p>Versez dans un moule à cake graissé (ou chemisé).<br>
+  Enfournez pour 35 à 40 minutes. Vérifie avec la lame d’un couteau (elle doit ressortir sèche).</p>
+
+  <p><strong>Astuce</strong></p>
+  <p>Vous pouvez ajouter un glaçage au citron ou saupoudrer du sucre glace après refroidissement.</p>
+</div>
+    <script>
+        const savedTheme = localStorage.getItem('cookzenTheme');
+    if (savedTheme) {
+      document.body.className = savedTheme;
+    }
+  </script>
+</body>
+</html>
