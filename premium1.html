@@ -458,10 +458,12 @@ j'aimerais enlever totalement la page quand on clique sur le bouton debloquer po
 
 <div class="barre"></div>
 
+<!-- Bouton de paiement simple -->
 <div>
   <h1>Acheter pour 0,99 €</h1>
   <div id="paypal-button-container"></div>
 </div>
+
 
 <!-- Bottom Navigation (non floutée) -->
 <div class="bottom-nav">
@@ -866,27 +868,77 @@ j'aimerais enlever totalement la page quand on clique sur le bouton debloquer po
   </div>
 
 <script>
-paypal.Buttons({
-  style: {
-    color: 'blue',
-    shape: 'rect',
-    label: 'paypal',
-    layout: 'vertical'
-  },
-  createOrder: function(data, actions) {
-    return actions.order.create({
-      purchase_units: [{ amount: { value: '0.99' } }]
-    });
-  },
-  onApprove: function(data, actions) {
-    return actions.order.capture().then(function(details) {
-      alert('✅ Paiement réussi ! Merci ' + details.payer.name.given_name);
-      // ici tu peux débloquer le contenu premium
-      document.body.classList.remove('blurred');
-      localStorage.setItem('cookzenPremium', 'true');
-    });
+// Gestion du statut premium
+function isPremium() {
+  return localStorage.getItem('cookzenPremium') === 'true';
+}
+
+function setPremium(status) {
+  localStorage.setItem('cookzenPremium', status.toString());
+}
+
+function checkPremiumStatus() {
+  if (isPremium()) {
+    document.getElementById('premiumStatus').classList.add('active');
+    document.body.classList.remove('blurred');
+  } else {
+    document.getElementById('premiumStatus').classList.remove('active');
+    document.body.classList.add('blurred');
   }
-}).render('#paypal-button-container');
+}
+
+// Gestion des modales
+function showPaymentModal() {
+  if (isPremium()) {
+    alert('Vous avez déjà accès au contenu premium ! 🎉');
+    return;
+  }
+  document.getElementById('paymentOverlay').classList.add('active');
+  initPayPalButton();
+}
+
+function hidePaymentModal() {
+  document.getElementById('paymentOverlay').classList.remove('active');
+}
+
+// Initialisation du bouton PayPal
+function initPayPalButton() {
+  // Vider le conteneur au cas où il y aurait déjà un bouton
+  document.getElementById('paypal-button-container').innerHTML = '';
+  
+  paypal.Buttons({
+    style: {
+      color: 'blue',
+      shape: 'rect',
+      label: 'paypal',
+      layout: 'vertical'
+    },
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '0.99'
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        // Marquer comme premium
+        setPremium(true);
+        
+        // Fermer la modale
+        hidePaymentModal();
+        
+        // Afficher la notification de succès
+        showSuccessNotification();
+        
+        // Mettre à jour l'interface
+        checkPremiumStatus();
+      });
+    }
+  }).render('#paypal-button-container');
+}
 
 function showSuccessNotification() {
   const notification = document.getElementById('successNotification');
@@ -1014,13 +1066,6 @@ document.getElementById('paymentOverlay').addEventListener('click', (e) => {
     hidePaymentModal();
   }
 });
-
-// TEST : Fonction pour réinitialiser le statut premium (à enlever en production)
-function resetPremium() {
-  localStorage.removeItem('cookzenPremium');
-  checkPremiumStatus();
-  console.log('Statut premium réinitialisé');
-}
 
 </script>
 
