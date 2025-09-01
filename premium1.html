@@ -11,10 +11,117 @@
       background: #f8f8f8;
     }
 
-    /* Classe pour flouter le contenu */
-    body.blurred .contenu {
-      filter: blur(5px);
+    /* Version améliorée - contenu semi-transparent au lieu de complètement flouté */
+    body:not(.premium) .contenu {
+      filter: blur(2px);
+      opacity: 0.3;
       pointer-events: none;
+      position: relative;
+    }
+
+    body:not(.premium) .contenu::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* Overlay de promotion visible */
+    .premium-promo {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #db3131, #ff4757);
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      z-index: 100;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      max-width: 350px;
+      width: 90%;
+      display: none;
+    }
+
+    body:not(.premium) .premium-promo {
+      display: block;
+    }
+
+    .premium-promo h2 {
+      margin: 0 0 15px 0;
+      font-size: 24px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .premium-promo p {
+      margin: 0 0 20px 0;
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    .premium-promo .price {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 15px 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .premium-promo .original-price {
+      font-size: 16px;
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+
+    .unlock-btn {
+      background: white;
+      color: #db3131;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .unlock-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Badge flottant pour montrer qu'on peut débloquer */
+    .unlock-badge {
+      position: fixed;
+      top: 150px;
+      right: 20px;
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 50;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      animation: pulse 2s infinite;
+      display: none;
+    }
+
+    body:not(.premium) .unlock-badge {
+      display: block;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
     body.rouge {
@@ -79,10 +186,30 @@
       font-size: 34px;
       cursor: pointer;
       color: #8f8989;
+      position: relative;
     }
 
     .nav-btn:focus {
       outline: none;
+    }
+
+    /* Badge sur le bouton premium */
+    .nav-btn.premium-btn::after {
+      content: '🔥';
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      font-size: 16px;
+      animation: bounce 1s infinite;
+    }
+
+    body.premium .nav-btn.premium-btn::after {
+      display: none;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
     
     .footer {
@@ -113,7 +240,7 @@
       margin-top: 140px;
       padding: 20px;
       font-size: 18px;
-      transition: filter 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     @media (max-width: 480px) {
@@ -182,26 +309,9 @@
       color: red;
     }
 
-    #filter-btn {
-      margin-bottom: 30px;
-      padding: 10px 20px;
-      background-color: #5865F2;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    #filter-btn:hover {
-      background-color: #404EED;
-    }
-
     @media (max-width: 480px) {
       .footer { font-size: 24px; height: 110px; }
       .barre { top: 110px; }
-      .discord-zone img { width: 60px; height: 60px; }
-      .discord-zone span { font-size: 12px; }
       .recette-title { font-size: 18px; }
     }
 
@@ -212,169 +322,6 @@
       font-size: 48px;
       font-weight: bold;
       color: white;
-    }
-
-    #lang-btn {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      background: white;
-      color: #db3131;
-      border: none;
-      border-radius: 5px;
-      font-size: 24px;
-      padding: 6px 10px;
-      cursor: pointer;
-      z-index: 11;
-      transition: background 0.2s;
-    }
-
-    #lang-btn:hover {
-      background: #f1f1f1;
-    }
-
-    /* Styles pour l'overlay de paiement */
-    .payment-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .payment-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .payment-modal {
-      background: white;
-      padding: 40px;
-      border-radius: 15px;
-      text-align: center;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
-    }
-
-    .payment-overlay.active .payment-modal {
-      transform: translateY(0);
-    }
-
-    .payment-modal h2 {
-      color: #db3131;
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
-
-    .payment-modal p {
-      color: #666;
-      margin-bottom: 20px;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .price-box {
-      background: linear-gradient(135deg, #db3131, #ff4757);
-      color: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin: 20px 0;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(219, 49, 49, 0.3);
-    }
-
-    .price-box .original-price {
-      font-size: 16px;
-      text-decoration: line-through;
-      opacity: 0.8;
-      margin-bottom: 5px;
-    }
-
-    .price-box .current-price {
-      font-size: 32px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .price-box .limited-offer {
-      font-size: 12px;
-      background: rgba(255,255,255,0.2);
-      padding: 5px 15px;
-      border-radius: 20px;
-      display: inline-block;
-      margin-top: 10px;
-    }
-
-    .features-list {
-      text-align: left;
-      margin: 20px 0;
-      background: #f8f9ff;
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 4px solid #db3131;
-    }
-
-    .features-list h3 {
-      color: #db3131;
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
-
-    .features-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .features-list li {
-      padding: 8px 0;
-      color: #333;
-      position: relative;
-      padding-left: 25px;
-    }
-
-    .features-list li::before {
-      content: "✅";
-      position: absolute;
-      left: 0;
-      top: 8px;
-    }
-
-    .payment-methods {
-      margin: 20px 0 10px 0;
-      text-align: center;
-    }
-
-    .payment-methods p {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 15px;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #999;
-    }
-
-    .close-modal:hover {
-      color: #333;
     }
 
     /* Status premium */
@@ -396,6 +343,153 @@
       display: block;
     }
 
+    /* Styles pour l'overlay de paiement amélioré */
+    .payment-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .payment-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .payment-modal {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transform: translateY(20px) scale(0.95);
+      transition: transform 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .payment-overlay.active .payment-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .payment-modal h2 {
+      color: #db3131;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .payment-modal p {
+      color: #666;
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .price-box {
+      background: linear-gradient(135deg, #db3131, #ff4757);
+      color: white;
+      padding: 25px;
+      border-radius: 15px;
+      margin: 20px 0;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(219, 49, 49, 0.3);
+    }
+
+    .price-box .original-price {
+      font-size: 16px;
+      text-decoration: line-through;
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+
+    .price-box .current-price {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .price-box .limited-offer {
+      font-size: 12px;
+      background: rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .features-list {
+      text-align: left;
+      margin: 20px 0;
+      background: #f8f9ff;
+      padding: 25px;
+      border-radius: 15px;
+      border-left: 4px solid #db3131;
+    }
+
+    .features-list h3 {
+      color: #db3131;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .features-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .features-list li {
+      padding: 10px 0;
+      color: #333;
+      position: relative;
+      padding-left: 30px;
+      font-size: 14px;
+    }
+
+    .features-list li::before {
+      content: "✅";
+      position: absolute;
+      left: 0;
+      top: 10px;
+    }
+
+    .payment-methods {
+      margin: 20px 0 10px 0;
+      text-align: center;
+    }
+
+    .payment-methods p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .close-modal:hover {
+      color: #333;
+    }
+
     /* Notification de paiement réussi */
     .success-notification {
       position: fixed;
@@ -405,13 +499,14 @@
       background: #4CAF50;
       color: white;
       padding: 20px 40px;
-      border-radius: 10px;
+      border-radius: 15px;
       font-size: 18px;
       font-weight: bold;
       z-index: 2000;
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
+      text-align: center;
     }
 
     .success-notification.show {
@@ -421,6 +516,28 @@
 
     #paypal-button-container {
       margin-top: 20px;
+    }
+
+    /* Mode démo - montrer un aperçu des recettes */
+    .demo-preview {
+      background: linear-gradient(45deg, rgba(219, 49, 49, 0.1), rgba(255, 71, 87, 0.1));
+      border: 2px dashed #db3131;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      color: #db3131;
+    }
+
+    .demo-preview h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+
+    .demo-preview p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.8;
     }
   </style>
   <!-- SDK PayPal -->
@@ -434,23 +551,48 @@
 
 <div class="barre"></div>
 
+<!-- Badge flottant pour débloquer -->
+<div class="unlock-badge" onclick="showPaymentModal()">
+  🔓 Débloquer tout - 0,99€
+</div>
+
 <!-- Status premium -->
 <div class="premium-status" id="premiumStatus">
   ✨ PREMIUM ACTIF
 </div>
 
-<!-- Bottom Navigation (non floutée) -->
+<!-- Promo overlay visible au centre -->
+<div class="premium-promo">
+  <h2>🔓 Débloquez toutes les recettes !</h2>
+  <p>Accédez à plus de 22 recettes sans gluten avec instructions détaillées</p>
+  
+  <div class="original-price">Prix habituel : 4,99 €</div>
+  <div class="price">0,99 €</div>
+  <div style="font-size: 12px; opacity: 0.8; margin: 10px 0;">⚡ OFFRE LIMITÉE - 80% DE RÉDUCTION</div>
+  
+  <button class="unlock-btn" onclick="showPaymentModal()">
+    🚀 Débloquer maintenant
+  </button>
+</div>
+
+<!-- Bottom Navigation -->
 <div class="bottom-nav">
   <a class="nav-btn" href="index.html">🏠</a>
-  <a class="nav-btn" href="#" onclick="showPaymentModal()">🔒</a>
+  <a class="nav-btn premium-btn" href="#" onclick="showPaymentModal()">🔒</a>
   <a class="nav-btn" href="favoris.html">❤️</a>
   <a class="nav-btn" href="parametres.html">⚙️</a>
 </div>
 
-<!-- Contenu principal (sera flouté si pas premium) -->
+<!-- Contenu principal -->
 <div class="contenu">
-   <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une recette..." onkeyup="filterRecipes()">
+  <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une recette..." onkeyup="filterRecipes()">
     
+  <!-- Aperçu démo pour les non-premium -->
+  <div class="demo-preview">
+    <h3>🍞 Aperçu : Pain sans gluten</h3>
+    <p>Ingrédients : Farine de riz, psyllium, levure... <strong>Débloquez pour voir la recette complète !</strong></p>
+  </div>
+
 <div id="recipeList">
     <div class="recette-item" data-id="pain">
       <span class="heart">🤍</span>
@@ -672,427 +814,4 @@
  <div class="recette-item" data-id="baguette">
       <span class="heart">🤍</span>
       <div class="recette-title">🥖 Baguette sans gluten
-        <button class="voir-btn" onclick="afficheRecette('baguette')">Voir</button>
-      </div>
-      <div id="baguette" class="recette-content">
-        <ul>
-    <li>350 g de farine sans gluten</li>
-    <li>1 c. à soupe de psyllium</li>
-    <li>1 c. à café de sel</li>
-    <li>1 c. à soupe de sucre</li>
-    <li>1 sachet de levure boulangère sèche</li>
-    <li>1 c. à soupe d'huile d'olive</li>
-    <li>300 ml d'eau tiède</li>
-        </ul>
-        <a class="etape-btn" href="baguette.html">Voir les étapes</a>
-      </div>
-    </div>
-
- <div class="recette-item" data-id="brioche">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🍞 Brioche sans gluten
-        <button class="voir-btn" onclick="afficheRecette('brioche')">Voir</button>
-      </div>
-      <div id="brioche" class="recette-content">
-        <ul>
-    <li>300 g de farine sans gluten</li>
-    <li>1 c. à soupe de psyllium</li>
-    <li>1/2 c. à café de sel</li>
-    <li>2 c. à soupe de sucre</li>
-    <li>1 sachet de levure boulangère sèche</li>
-    <li>2 œufs</li>
-    <li>150 ml de lait tiède</li>
-    <li>60 g de beurre fondu</li>
-        </ul>
-        <a class="etape-btn" href="brioche.html">Voir les étapes</a>
-      </div>
-    </div>
-
- <div class="recette-item" data-id="cakecitron">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🍋 Cake au citron sans gluten
-        <button class="voir-btn" onclick="afficheRecette('cakecitron')">Voir</button>
-      </div>
-      <div id="cakecitron" class="recette-content">
-        <ul>
-    <li>3 œufs</li>
-    <li>120 g de sucre</li>
-    <li>100 g de beurre fondu</li>
-    <li>Le jus + zeste d'un citron</li>
-    <li>100 g de farine de riz</li>
-    <li>50 g de poudre d'amande</li>
-    <li>50 g de fécule de maïs</li>
-    <li>1/2 sachet de levure chimique</li>
-    <li>1 pincée de sel</li>
-        </ul>
-        <a class="etape-btn" href="cakecitron.html">Voir les étapes</a>
-      </div>
-    </div>
-
- <div class="recette-item" data-id="tortilla">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🌕 Tortilla sans gluten
-        <button class="voir-btn" onclick="afficheRecette('tortilla')">Voir</button>
-      </div>
-      <div id="tortilla" class="recette-content">
-        <ul>
-    <li>200 g de farine sans gluten</li>
-    <li>1/2 c. à café de sel</li>
-    <li>Environ 150 ml d'eau</li>
-        </ul>
-        <a class="etape-btn" href="tortilla.html">Voir les étapes</a>
-      </div>
-    </div>
-  
- <div class="recette-item" data-id="madeleines">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🥟 Madeleines sans gluten
-        <button class="voir-btn" onclick="afficheRecette('madeleines')">Voir</button>
-      </div>
-      <div id="madeleines" class="recette-content">
-        <ul>
-    <li>100 g de farine de riz</li>
-    <li>30 g de fécule de maïs</li>
-    <li>2 œufs</li>
-    <li>100 g de sucre</li>
-    <li>100 g de beurre fondu</li>
-    <li>1/2 sachet de levure sans gluten</li>
-    <li>1 zeste de citron ou 1 c. à café de vanille</li>
-        </ul>
-        <a class="etape-btn" href="madeleines.html">Voir les étapes</a>
-      </div>
-    </div>
-
- <div class="recette-item" data-id="pancakes">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🥞 Pancakes sans gluten
-        <button class="voir-btn" onclick="afficheRecette('pancakes')">Voir</button>
-      </div>
-      <div id="pancakes" class="recette-content">
-        <ul>
-    <li>100 g de farine de riz</li>
-    <li>50 g de fécule de maïs</li>
-    <li>1 c. à café de levure sans gluten</li>
-    <li>1 c. à soupe de sucre</li>
-    <li>2 œufs</li>
-    <li>200 ml de lait</li>
-    <li>1 c. à soupe d'huile</li>
-    <li>1 pincée de sel</li>
-        </ul>
-        <a class="etape-btn" href="pancakes.html">Voir les étapes</a>
-      </div>
-    </div>
-
- <div class="recette-item" data-id="tartepomme">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🥧 Tarte au pomme sans gluten
-        <button class="voir-btn" onclick="afficheRecette('tartepomme')">Voir</button>
-      </div>
-      <div id="tartepomme" class="recette-content">
-        <ul>
-          <li>120 g de farine de riz</li>
-          <li>40 g de poudre d'amande</li>
-          <li>40 g de fécule de maïs</li>
-          <li>80 g de beurre ou margarine</li>
-          <li>1 œuf</li>
-          <li>1 c. à soupe de sucre</li>
-          <li>1 pincée de sel</li>
-        </ul>
-        <a class="etape-btn" href="tartepommes.html">Voir les étapes</a>
-      </div>
-    </div>
-
- <div class="recette-item" data-id="wraps">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🌯 Wraps sans gluten
-        <button class="voir-btn" onclick="afficheRecette('wraps')">Voir</button>
-      </div>
-      <div id="wraps" class="recette-content">
-        <ul>
-          <li>120 g de farine de riz</li>
-          <li>60 g de fécule de tapioca</li>
-          <li>1 c. à café de psyllium blond</li>
-          <li>1 pincée de sel</li>
-          <li>150 ml d'eau tiède</li>
-          <li>1 c. à soupe d'huile neutre</li>
-        </ul>
-        <a class="etape-btn" href="wraps.html">Voir les étapes</a>
-      </div>
-    </div>
-  
-    <div class="recette-item" data-id="cookies">
-      <span class="heart">🤍</span>
-      <div class="recette-title">🍪 Cookies sans gluten
-        <button class="voir-btn" onclick="afficheRecette('cookies')">Voir</button>
-      </div>
-      <div id="cookies" class="recette-content">
-        <ul>
-          <li>120 g de farine sans gluten</li>
-          <li>100 g de sucre roux</li>
-          <li>1 œuf</li>
-          <li>80 g de beurre mou</li>
-          <li>1/2 c. à café de levure chimique sans gluten</li>
-          <li>1/2 c. à café d'extrait de vanille</li>
-          <li>100 g de pépites de chocolat noir</li>
-        </ul>
-        <a class="etape-btn" href="cookies.html">Voir les étapes</a>
-      </div>
-    </div>
-  </div>
-  </div>
-
-<!-- Overlay de paiement -->
-<div class="payment-overlay" id="paymentOverlay">
-  <div class="payment-modal">
-    <button class="close-modal" onclick="hidePaymentModal()">×</button>
-    <h2>🔓 Débloquez CookZen Premium</h2>
-    
-    <div class="price-box">
-      <div class="original-price">Prix habituel : 4,99 €</div>
-      <div class="current-price">0,99 €</div>
-      <div class="limited-offer">⚡ OFFRE LIMITÉE - 80% DE RÉDUCTION</div>
-    </div>
-    
-    <div class="features-list">
-      <h3>🎯 Ce que vous obtenez :</h3>
-      <ul>
-        <li>Accès à toutes les 22+ recettes sans gluten</li>
-        <li>Instructions détaillées étape par étape</li>
-        <li>Système de favoris pour vos recettes préférées</li>
-        <li>Fonction de recherche avancée</li>
-        <li>Accès à vie - payez une fois, profitez toujours</li>
-        <li>Nouvelles recettes ajoutées régulièrement</li>
-        <li>Support prioritaire</li>
-      </ul>
-    </div>
-    
-    <div class="payment-methods">
-      <p><strong>💳 Paiement 100% sécurisé</strong></p>
-      <p>PayPal • Carte bancaire • Pas d'abonnement</p>
-    </div>
-    
-    <div id="paypal-button-container"></div>
-    
-    <p style="font-size: 12px; color: #999; margin-top: 15px;">
-      🔒 Paiement sécurisé avec PayPal. Aucune donnée bancaire stockée.<br>
-      Remboursement garanti sous 30 jours.
-    </p>
-  </div>
-</div>
-
-<!-- Notification de succès -->
-<div class="success-notification" id="successNotification">
-  ✅ Paiement réussi ! Bienvenue dans CookZen Premium !
-</div>
-
-<script>
-// Gestion du statut premium
-function isPremium() {
-  return localStorage.getItem('cookzenPremium') === 'true';
-}
-
-function setPremium(status) {
-  localStorage.setItem('cookzenPremium', status.toString());
-}
-
-function checkPremiumStatus() {
-  if (isPremium()) {
-    document.getElementById('premiumStatus').classList.add('active');
-    document.body.classList.remove('blurred');
-  } else {
-    document.getElementById('premiumStatus').classList.remove('active');
-    document.body.classList.add('blurred');
-  }
-}
-
-// Gestion des modales
-function showPaymentModal() {
-  if (isPremium()) {
-    alert('Vous avez déjà accès au contenu premium ! 🎉');
-    return;
-  }
-  document.getElementById('paymentOverlay').classList.add('active');
-  initPayPalButton();
-}
-
-function hidePaymentModal() {
-  document.getElementById('paymentOverlay').classList.remove('active');
-}
-
-// Initialisation du bouton PayPal
-function initPayPalButton() {
-  // Vider le conteneur au cas où il y aurait déjà un bouton
-  document.getElementById('paypal-button-container').innerHTML = '';
-  
-  paypal.Buttons({
-    style: {
-      color: 'blue',
-      shape: 'rect',
-      label: 'paypal',
-      layout: 'vertical'
-    },
-    createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: '0.99'
-          }
-        }]
-      });
-    },
-    onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        // Marquer comme premium
-        setPremium(true);
-        
-        // Fermer la modale
-        hidePaymentModal();
-        
-        // Afficher la notification de succès
-        showSuccessNotification();
-        
-        // Mettre à jour l'interface
-        checkPremiumStatus();
-      });
-    }
-  }).render('#paypal-button-container');
-}
-
-function showSuccessNotification() {
-  const notification = document.getElementById('successNotification');
-  notification.classList.add('show');
-  
-  setTimeout(() => {
-    notification.classList.remove('show');
-  }, 3000);
-}
-
-// Gestion des favoris (code original)
-function getFavoris() {
-  const favoris = localStorage.getItem('favoris');
-  return favoris ? JSON.parse(favoris) : [];
-}
-
-function saveFavoris(favoris) {
-  localStorage.setItem('favoris', JSON.stringify(favoris));
-}
-
-function updateHearts() {
-  const favoris = getFavoris();
-  document.querySelectorAll('.recette-item').forEach(item => {
-    const id = item.dataset.id;
-    const heart = item.querySelector('.heart');
-    if (favoris.includes(id)) {
-      heart.textContent = '❤️';
-      heart.classList.add('fav');
-    } else {
-      heart.textContent = '🤍';
-      heart.classList.remove('fav');
-    }
-  });
-}
-
-function setupHearts() {
-  document.querySelectorAll('.heart').forEach(heart => {
-    heart.addEventListener('click', () => {
-      if (!isPremium()) {
-        showPaymentModal();
-        return;
-      }
-      
-      const item = heart.closest('.recette-item');
-      const id = item.dataset.id;
-      let favoris = getFavoris();
-
-      if (favoris.includes(id)) {
-        favoris = favoris.filter(favId => favId !== id);
-      } else {
-        favoris.push(id);
-      }
-
-      saveFavoris(favoris);
-      updateHearts();
-    });
-  });
-}
-
-function filterRecipes() {
-  if (!isPremium()) {
-    showPaymentModal();
-    return;
-  }
-  
-  const search = document.getElementById('searchInput').value.toLowerCase();
-
-  document.querySelectorAll('.recette-item').forEach(item => {
-    const title = item.querySelector('.recette-title').textContent.toLowerCase();
-
-    if (title.includes(search)) {
-      item.style.display = '';
-    } else {
-      item.style.display = 'none';
-    }
-  });
-}
-
-function afficheRecette(id) {
-  if (!isPremium()) {
-    showPaymentModal();
-    return;
-  }
-
-  const recette = document.getElementById(id);
-  if (!recette) return;
-
-  if (recette.style.display === 'block') {
-    recette.style.display = 'none';
-  } else {
-    recette.style.display = 'block';
-  }
-}
-
-// Initialisation
-document.addEventListener('DOMContentLoaded', () => {
-  checkPremiumStatus();
-  updateHearts();
-  setupHearts();
-
-  // Bloquer la recherche si pas premium
-  document.getElementById('searchInput').addEventListener('focus', () => {
-    if (!isPremium()) {
-      document.getElementById('searchInput').blur();
-      showPaymentModal();
-    }
-  });
-
-  document.getElementById('searchInput').addEventListener('input', () => {
-    if (isPremium()) {
-      filterRecipes();
-    }
-  });
-});
-
-// Gestion des thèmes (code original)
-const savedTheme = localStorage.getItem('cookzenTheme');
-if (savedTheme) {
-  document.body.className = savedTheme;
-}
-
-// Fermer la modale en cliquant en dehors
-document.getElementById('paymentOverlay').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('paymentOverlay')) {
-    hidePaymentModal();
-  }
-});
-
-// TEST : Fonction pour réinitialiser le statut premium (à enlever en production)
-function resetPremium() {
-  localStorage.removeItem('cookzenPremium');
-  checkPremiumStatus();
-  console.log('Statut premium réinitialisé');
-}
-
-</script>
-
-</body>
-</html>
+        <button class="voir-btn" onclick="afficheRecette('
