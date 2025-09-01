@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+j'aimerais enlever totalement la page quand on clique sur le bouton debloquer pour 0,99, comment ? <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -464,11 +464,9 @@
 </div>
 
 <!-- Bouton de paiement simple -->
-<div style="text-align:center; margin-bottom:10px; font-weight:bold;">
-  Acheter pour 0,99 €
-</div>
-  
-<div id="paypal-button-container"></div>
+<button class="pay-btn" onclick="showPaymentModal()">
+  Débloquer pour 0,99€
+</button>
 
 <!-- Bottom Navigation (non floutée) -->
 <div class="bottom-nav">
@@ -872,7 +870,83 @@
   </div>
   </div>
 
+<!-- Overlay de paiement -->
+<div class="payment-overlay" id="paymentOverlay">
+  <div class="payment-modal">
+    <button class="close-modal" onclick="hidePaymentModal()">×</button>
+    <h2>Débloquer CookZen</h2>
+    
+    <div class="price-box">
+      <div class="current-price">0,99 €</div>
+    </div>
+    
+    <div class="features-list">
+      <h3>Accès complet aux recettes sans gluten</h3>
+      <ul>
+        <li>Plus de 22 recettes détaillées</li>
+        <li>Instructions étape par étape</li>
+        <li>Système de favoris</li>
+        <li>Fonction de recherche</li>
+      </ul>
+    </div>
+    
+    <div class="payment-methods">
+      <p>Paiement sécurisé avec PayPal</p>
+    </div>
+    
+    <div id="paypal-button-container"></div>
+    
+    <p style="font-size: 12px; color: #999; margin-top: 15px;">
+      🔒 Paiement sécurisé avec PayPal. Aucune donnée bancaire stockée.<br>
+      Remboursement garanti sous 30 jours.
+    </p>
+  </div>
+</div>
+
+<!-- Notification de succès -->
+<div class="success-notification" id="successNotification">
+  ✅ Paiement réussi ! Bienvenue dans CookZen Premium !
+</div>
+
 <script>
+// Gestion du statut premium
+function isPremium() {
+  return localStorage.getItem('cookzenPremium') === 'true';
+}
+
+function setPremium(status) {
+  localStorage.setItem('cookzenPremium', status.toString());
+}
+
+function checkPremiumStatus() {
+  if (isPremium()) {
+    document.getElementById('premiumStatus').classList.add('active');
+    document.body.classList.remove('blurred');
+  } else {
+    document.getElementById('premiumStatus').classList.remove('active');
+    document.body.classList.add('blurred');
+  }
+}
+
+// Gestion des modales
+function showPaymentModal() {
+  if (isPremium()) {
+    alert('Vous avez déjà accès au contenu premium ! 🎉');
+    return;
+  }
+  document.getElementById('paymentOverlay').classList.add('active');
+  initPayPalButton();
+}
+
+function hidePaymentModal() {
+  document.getElementById('paymentOverlay').classList.remove('active');
+}
+
+// Initialisation du bouton PayPal
+function initPayPalButton() {
+  // Vider le conteneur au cas où il y aurait déjà un bouton
+  document.getElementById('paypal-button-container').innerHTML = '';
+  
   paypal.Buttons({
     style: {
       color: 'blue',
@@ -883,17 +957,38 @@
     createOrder: function(data, actions) {
       return actions.order.create({
         purchase_units: [{
-          amount: { value: '0.99' }
+          amount: {
+            value: '0.99'
+          }
         }]
       });
     },
     onApprove: function(data, actions) {
       return actions.order.capture().then(function(details) {
-        alert('✅ Paiement réussi ! Merci ' + details.payer.name.given_name);
-        // ➡️ Ici tu enlèves le flou pour débloquer les recettes
+        // Marquer comme premium
+        setPremium(true);
+        
+        // Fermer la modale
+        hidePaymentModal();
+        
+        // Afficher la notification de succès
+        showSuccessNotification();
+        
+        // Mettre à jour l'interface
+        checkPremiumStatus();
       });
     }
   }).render('#paypal-button-container');
+}
+
+function showSuccessNotification() {
+  const notification = document.getElementById('successNotification');
+  notification.classList.add('show');
+  
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 3000);
+}
 
 // Gestion des favoris (code original)
 function getFavoris() {
