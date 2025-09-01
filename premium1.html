@@ -231,18 +231,6 @@ body.violet {
 </head>
 <body>
 
-<div class="footer">
-  <div class="cookzen-title">CookZen</div>
-</div>
-
-  <div class="barre"></div>
-<div class="bottom-nav">
-  <a class="nav-btn" href="index.html">🏠</a>
-  <a class="nav-btn" href="premium1.html">🔒</a>
-  <a class="nav-btn" href="favoris.html">❤️</a>
-  <a class="nav-btn" href="parametres.html">⚙️</a>
-</div>
-
   <div id="premium-box" style="
     border: 2px solid #db3131;
     padding: 20px;
@@ -257,9 +245,24 @@ body.violet {
   <div id="paypal-button-container"></div>
 </div>
 
+<div class="footer">
+  <div class="cookzen-title">CookZen</div>
+</div>
+
+  <div class="barre"></div>
+<div class="bottom-nav">
+  <a class="nav-btn" href="index.html">🏠</a>
+  <a class="nav-btn" href="premium1.html">🔒</a>
+  <a class="nav-btn" href="favoris.html">❤️</a>
+  <a class="nav-btn" href="parametres.html">⚙️</a>
+</div>
+
+  
   <div class="contenu">
    <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une recette..." onkeyup="filterRecipes()">
-    
+
+    <div id="premium-content" style="display:none;">
+  <!-- toutes les recettes premium ici -->
 <div id="recipeList">
     <div class="recette-item" data-id="pain">
       <span class="heart">🤍</span>
@@ -649,6 +652,7 @@ body.violet {
     </div>
   </div>
   </div>
+  </div>
 
 <script>
 
@@ -740,7 +744,6 @@ document.addEventListener('DOMContentLoaded', () => {
   <script src="https://www.paypal.com/sdk/js?client-id=AT_MGYX4SEq8NxKq0dH6GJUYzstXg0_s9vUxJ4eIcOGBesHJqIXOnCczXtzy5pOLeqkLHzLZGKcbPpti&currency=EUR"></script>
 <script>
 paypal.Buttons({
-  style: { color: 'blue', shape: 'rect', label: 'paypal', layout: 'vertical' },
   createOrder: function(data, actions) {
     return actions.order.create({
       purchase_units: [{ amount: { value: '0.99' } }]
@@ -749,8 +752,9 @@ paypal.Buttons({
   onApprove: function(data, actions) {
     return actions.order.capture().then(function(details) {
       alert('✅ Paiement réussi ! Merci ' + details.payer.name.given_name);
-      // Supprime la box pour montrer le contenu premium
+      // Supprime la box et affiche les recettes premium
       document.getElementById('premium-box').style.display = 'none';
+      document.getElementById('premium-content').style.display = 'block';
     });
   }
 }).render('#paypal-button-container');
