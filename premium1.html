@@ -279,9 +279,87 @@
 
     .payment-modal p {
       color: #666;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       font-size: 16px;
       line-height: 1.5;
+    }
+
+    .price-box {
+      background: linear-gradient(135deg, #db3131, #ff4757);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(219, 49, 49, 0.3);
+    }
+
+    .price-box .original-price {
+      font-size: 16px;
+      text-decoration: line-through;
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+
+    .price-box .current-price {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .price-box .limited-offer {
+      font-size: 12px;
+      background: rgba(255,255,255,0.2);
+      padding: 5px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .features-list {
+      text-align: left;
+      margin: 20px 0;
+      background: #f8f9ff;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #db3131;
+    }
+
+    .features-list h3 {
+      color: #db3131;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .features-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .features-list li {
+      padding: 8px 0;
+      color: #333;
+      position: relative;
+      padding-left: 25px;
+    }
+
+    .features-list li::before {
+      content: "✅";
+      position: absolute;
+      left: 0;
+      top: 8px;
+    }
+
+    .payment-methods {
+      margin: 20px 0 10px 0;
+      text-align: center;
+    }
+
+    .payment-methods p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 15px;
     }
 
     .close-modal {
@@ -767,12 +845,38 @@
 <div class="payment-overlay" id="paymentOverlay">
   <div class="payment-modal">
     <button class="close-modal" onclick="hidePaymentModal()">×</button>
-    <h2>🔓 Débloquez toutes les recettes</h2>
-    <p>
-      Accédez à toutes nos recettes sans gluten premium pour seulement <strong>0,99 €</strong> !<br>
-      Paiement sécurisé avec PayPal.
-    </p>
+    <h2>🔓 Débloquez CookZen Premium</h2>
+    
+    <div class="price-box">
+      <div class="original-price">Prix habituel : 4,99 €</div>
+      <div class="current-price">0,99 €</div>
+      <div class="limited-offer">⚡ OFFRE LIMITÉE - 80% DE RÉDUCTION</div>
+    </div>
+    
+    <div class="features-list">
+      <h3>🎯 Ce que vous obtenez :</h3>
+      <ul>
+        <li>Accès à toutes les 22+ recettes sans gluten</li>
+        <li>Instructions détaillées étape par étape</li>
+        <li>Système de favoris pour vos recettes préférées</li>
+        <li>Fonction de recherche avancée</li>
+        <li>Accès à vie - payez une fois, profitez toujours</li>
+        <li>Nouvelles recettes ajoutées régulièrement</li>
+        <li>Support prioritaire</li>
+      </ul>
+    </div>
+    
+    <div class="payment-methods">
+      <p><strong>💳 Paiement 100% sécurisé</strong></p>
+      <p>PayPal • Carte bancaire • Pas d'abonnement</p>
+    </div>
+    
     <div id="paypal-button-container"></div>
+    
+    <p style="font-size: 12px; color: #999; margin-top: 15px;">
+      🔒 Paiement sécurisé avec PayPal. Aucune donnée bancaire stockée.<br>
+      Remboursement garanti sous 30 jours.
+    </p>
   </div>
 </div>
 
