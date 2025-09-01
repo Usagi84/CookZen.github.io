@@ -227,31 +227,9 @@ body.violet {
   background: #f1f1f1;
 }
 
-    .blurred { filter: blur(6px); pointer-events: none; user-select: none; }
-
-#pay-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
-  flex-direction: column;
-  color: white;
-  font-size: 24px;
-}
-#paypal-button-container { margin-top: 20px; }
-
   </style>
 </head>
 <body>
-
-  <div id="pay-overlay">
-  <div>Acheter le pass de recettes pour 0,99 €</div>
-  <div id="paypal-button-container"></div>
-</div>
 
 <div class="footer">
   <div class="cookzen-title">CookZen</div>
@@ -265,7 +243,20 @@ body.violet {
   <a class="nav-btn" href="parametres.html">⚙️</a>
 </div>
 
-  
+  <div id="premium-box" style="
+    border: 2px solid #db3131;
+    padding: 20px;
+    max-width: 400px;
+    margin: 40px auto;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 12px;
+">
+  <h2>🔥 Débloquez 50+ recettes !</h2>
+  <p>Pour seulement 0,99 €</p>
+  <div id="paypal-button-container"></div>
+</div>
+
   <div class="contenu">
    <input type="text" id="searchInput" class="search-input" placeholder="Rechercher une recette..." onkeyup="filterRecipes()">
     
@@ -746,28 +737,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 }
 
-  <!-- SDK PayPal -->
-<script src="https://www.paypal.com/sdk/js?client-id=AT_MGYX4SEq8NxKq0dH6GJUYzstXg0_s9vUxJ4eIcOGBesHJqIXOnCczXtzy5pOLeqkLHzLZGKcbPpti&currency=EUR"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AT_MGYX4SEq8NxKq0dH6GJUYzstXg0_s9vUxJ4eIcOGBesHJqIXOnCczXtzy5pOLeqkLHzLZGKcbPpti&currency=EUR"></script>
 <script>
-  // Ajouter flou sur le contenu au départ
-  document.getElementById('mainContent').classList.add('blurred');
-
-  // PayPal
-  paypal.Buttons({
-    createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{ amount: { value: '0.99' } }]
-      });
-    },
-    onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        alert('✅ Paiement réussi ! Merci ' + details.payer.name.given_name);
-        // Débloquer le contenu
-        document.getElementById('mainContent').classList.remove('blurred');
-        document.getElementById('pay-overlay').style.display = 'none';
-      });
-    }
-  }).render('#paypal-button-container');
+paypal.Buttons({
+  style: { color: 'blue', shape: 'rect', label: 'paypal', layout: 'vertical' },
+  createOrder: function(data, actions) {
+    return actions.order.create({
+      purchase_units: [{ amount: { value: '0.99' } }]
+    });
+  },
+  onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+      alert('✅ Paiement réussi ! Merci ' + details.payer.name.given_name);
+      // Supprime la box pour montrer le contenu premium
+      document.getElementById('premium-box').style.display = 'none';
+    });
+  }
+}).render('#paypal-button-container');
 </script>
 
 </script>
