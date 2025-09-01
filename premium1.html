@@ -17,61 +17,26 @@
       pointer-events: none;
     }
 
-    /* NOUVEAU : Badge visible même avec le flou */
-    .premium-unlock-btn {
+    /* Bouton de paiement simple */
+    .pay-btn {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: linear-gradient(135deg, #db3131, #ff4757);
+      background: #db3131;
       color: white;
       border: none;
-      padding: 20px 40px;
-      border-radius: 25px;
-      font-size: 20px;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 18px;
       font-weight: bold;
       cursor: pointer;
       z-index: 100;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      animation: pulse 2s infinite;
       display: none;
     }
 
-    body.blurred .premium-unlock-btn {
+    body.blurred .pay-btn {
       display: block;
-    }
-
-    @keyframes pulse {
-      0% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.05); }
-      100% { transform: translate(-50%, -50%) scale(1); }
-    }
-
-    /* NOUVEAU : Badge flottant discret */
-    .unlock-badge {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background: #ff4757;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 50;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      animation: bounce 2s infinite;
-      display: none;
-    }
-
-    body.blurred .unlock-badge {
-      display: block;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
     }
 
     /* Tout le reste IDENTIQUE à l'original */
@@ -142,20 +107,6 @@
 
     .nav-btn:focus {
       outline: none;
-    }
-
-    /* NOUVEAU : Badge sur le bouton premium */
-    .nav-btn.premium-btn::after {
-      content: '🔥';
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      font-size: 16px;
-      animation: bounce 1s infinite;
-    }
-
-    body:not(.blurred) .nav-btn.premium-btn::after {
-      display: none;
     }
     
     .footer {
@@ -512,21 +463,15 @@
   ✨ PREMIUM ACTIF
 </div>
 
-<!-- NOUVEAU : Bouton principal de déverrouillage (visible seulement si flouté) -->
-<button class="premium-unlock-btn" onclick="showPaymentModal()">
-  🔓 Débloquer toutes les recettes<br>
-  <span style="font-size: 16px; opacity: 0.9;">Seulement 0,99€</span>
+<!-- Bouton de paiement simple -->
+<button class="pay-btn" onclick="showPaymentModal()">
+  Débloquer pour 0,99€
 </button>
-
-<!-- NOUVEAU : Badge discret en bas -->
-<div class="unlock-badge" onclick="showPaymentModal()">
-  🔥 -80% : 0,99€
-</div>
 
 <!-- Bottom Navigation (non floutée) -->
 <div class="bottom-nav">
   <a class="nav-btn" href="index.html">🏠</a>
-  <a class="nav-btn premium-btn" href="#" onclick="showPaymentModal()">🔒</a>
+  <a class="nav-btn" href="#" onclick="showPaymentModal()">🔒</a>
   <a class="nav-btn" href="favoris.html">❤️</a>
   <a class="nav-btn" href="parametres.html">⚙️</a>
 </div>
@@ -929,30 +874,24 @@
 <div class="payment-overlay" id="paymentOverlay">
   <div class="payment-modal">
     <button class="close-modal" onclick="hidePaymentModal()">×</button>
-    <h2>🔓 Débloquez CookZen Premium</h2>
+    <h2>Débloquer CookZen</h2>
     
     <div class="price-box">
-      <div class="original-price">Prix habituel : 4,99 €</div>
       <div class="current-price">0,99 €</div>
-      <div class="limited-offer">⚡ OFFRE LIMITÉE - 80% DE RÉDUCTION</div>
     </div>
     
     <div class="features-list">
-      <h3>🎯 Ce que vous obtenez :</h3>
+      <h3>Accès complet aux recettes sans gluten</h3>
       <ul>
-        <li>Accès à toutes les 22+ recettes sans gluten</li>
-        <li>Instructions détaillées étape par étape</li>
-        <li>Système de favoris pour vos recettes préférées</li>
-        <li>Fonction de recherche avancée</li>
-        <li>Accès à vie - payez une fois, profitez toujours</li>
-        <li>Nouvelles recettes ajoutées régulièrement</li>
-        <li>Support prioritaire</li>
+        <li>Plus de 22 recettes détaillées</li>
+        <li>Instructions étape par étape</li>
+        <li>Système de favoris</li>
+        <li>Fonction de recherche</li>
       </ul>
     </div>
     
     <div class="payment-methods">
-      <p><strong>💳 Paiement 100% sécurisé</strong></p>
-      <p>PayPal • Carte bancaire • Pas d'abonnement</p>
+      <p>Paiement sécurisé avec PayPal</p>
     </div>
     
     <div id="paypal-button-container"></div>
