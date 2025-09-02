@@ -872,55 +872,9 @@
   </div>
 
 <!-- Overlay de paiement -->
-<div class="payment-overlay" id="paymentOverlay">
-  <div class="payment-modal">
-    <button class="close-modal" onclick="hidePaymentModal()">×</button>
-
-<!-- Notification de succès -->
-<div class="success-notification" id="successNotification">
-  ✅ Paiement réussi ! Bienvenue dans CookZen Premium !
-</div>
-
+<script src="https://www.paypal.com/sdk/js?client-id=AT_MGYX4SEq8NxKq0dH6GJUYzstXg0_s9vUxJ4eIcOGBesHJqIXOnCczXtzy5pOLeqkLHzLZGKcbPpti&currency=EUR"></script>
 <script>
-// Gestion du statut premium
-function isPremium() {
-  return localStorage.getItem('cookzenPremium') === 'true';
-}
-
-function setPremium(status) {
-  localStorage.setItem('cookzenPremium', status.toString());
-}
-
-function checkPremiumStatus() {
-  if (isPremium()) {
-    document.getElementById('premiumStatus').classList.add('active');
-    document.body.classList.remove('blurred');
-  } else {
-    document.getElementById('premiumStatus').classList.remove('active');
-    document.body.classList.add('blurred');
-  }
-}
-
-// Gestion des modales
-function showPaymentModal() {
-  if (isPremium()) {
-    alert('Vous avez déjà accès au contenu premium ! 🎉');
-    return;
-  }
-  document.getElementById('paymentOverlay').classList.add('active');
-  initPayPalButton();
-}
-
-function hidePaymentModal() {
-  document.getElementById('paymentOverlay').classList.remove('active');
-}
-
-// Initialisation du bouton PayPal
-function initPayPalButton() {
-  // Vider le conteneur au cas où il y aurait déjà un bouton
-  document.getElementById('paypal-button-container').innerHTML = '';
-  
-  paypal.Buttons({
+paypal.Buttons({
     style: {
       color: 'blue',
       shape: 'rect',
@@ -928,40 +882,20 @@ function initPayPalButton() {
       layout: 'vertical'
     },
     createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: '0.99'
-          }
-        }]
-      });
+        return actions.order.create({
+            purchase_units: [{
+                amount: { value: '0.99' }
+            }]
+        });
     },
     onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        // Marquer comme premium
-        setPremium(true);
-        
-        // Fermer la modale
-        hidePaymentModal();
-        
-        // Afficher la notification de succès
-        showSuccessNotification();
-        
-        // Mettre à jour l'interface
-        checkPremiumStatus();
-      });
+        return actions.order.capture().then(function(details) {
+            alert('✅ Paiement réussi ! Merci ' + details.payer.name.given_name);
+            // Débloque la page premium
+            localStorage.setItem('cookzenPremium', 'true');
+        });
     }
-  }).render('#paypal-button-container');
-}
-
-function showSuccessNotification() {
-  const notification = document.getElementById('successNotification');
-  notification.classList.add('show');
-  
-  setTimeout(() => {
-    notification.classList.remove('show');
-  }, 3000);
-}
+}).render('#paypal-button-container');
 
 // Gestion des favoris (code original)
 function getFavoris() {
