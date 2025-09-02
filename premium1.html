@@ -11,6 +11,15 @@
       background: #f8f8f8;
     }
 
+    .paypal-container {
+  margin-top: 15px; /* espace sous le bouton principal */
+  display: none;    /* caché par défaut */
+}
+
+.payment-overlay.active .paypal-container {
+  display: block; /* affiché quand la modale est ouverte */
+}
+
     /* Classe pour flouter le contenu - IDENTIQUE à l'original */
     body.blurred .contenu {
       filter: blur(5px);
@@ -463,12 +472,13 @@
   ✨ PREMIUM ACTIF
 </div>
 
-<!-- Bouton de paiement simple -->
-<button class="pay-btn" onclick="showPaymentModal()">
+<!-- Bouton principal -->
+<div class="pay-btn" onclick="showPaymentModal()">
   Débloquer pour 0,99€
-</button>
-  
-<div id="paypal-button-container" class="pay-btn"></div>
+</div>
+
+<!-- Bouton PayPal (sera affiché dans la modale) -->
+<div id="paypal-button-container" class="paypal-container"></div>
 
 <!-- Bottom Navigation (non floutée) -->
 <div class="bottom-nav">
@@ -891,62 +901,23 @@
         <li>Fonction de recherche</li>
       </ul>
     </div>
-    
-    <div class="payment-methods">
-      <p>Paiement sécurisé avec PayPal</p>
-    </div>
-    
-    <p style="font-size: 12px; color: #999; margin-top: 15px;">
-      🔒 Paiement sécurisé avec PayPal. Aucune donnée bancaire stockée.<br>
-      Remboursement garanti sous 30 jours.
-    </p>
-  </div>
-</div>
 
-<!-- Notification de succès -->
-<div class="success-notification" id="successNotification">
-  ✅ Paiement réussi ! Bienvenue dans CookZen Premium !
-</div>
-
-<script>
-// Gestion du statut premium
-function isPremium() {
-  return localStorage.getItem('cookzenPremium') === 'true';
-}
-
-function setPremium(status) {
-  localStorage.setItem('cookzenPremium', status.toString());
-}
-
-function checkPremiumStatus() {
-  if (isPremium()) {
-    document.getElementById('premiumStatus').classList.add('active');
-    document.body.classList.remove('blurred');
-  } else {
-    document.getElementById('premiumStatus').classList.remove('active');
-    document.body.classList.add('blurred');
-  }
-}
-
-// Gestion des modales
+    <script>
 function showPaymentModal() {
   if (isPremium()) {
     alert('Vous avez déjà accès au contenu premium ! 🎉');
     return;
   }
   document.getElementById('paymentOverlay').classList.add('active');
+  
+  // Render PayPal dans la modale
   initPayPalButton();
 }
 
-function hidePaymentModal() {
-  document.getElementById('paymentOverlay').classList.remove('active');
-}
-
-// Initialisation du bouton PayPal
 function initPayPalButton() {
-  // Vider le conteneur au cas où il y aurait déjà un bouton
-  document.getElementById('paypal-button-container').innerHTML = '';
-  
+  const container = document.getElementById('paypal-button-container');
+  container.innerHTML = ''; // reset
+
   paypal.Buttons({
     style: {
       color: 'blue',
@@ -957,37 +928,19 @@ function initPayPalButton() {
     createOrder: function(data, actions) {
       return actions.order.create({
         purchase_units: [{
-          amount: {
-            value: '0.99'
-          }
+          amount: { value: '0.99' }
         }]
       });
     },
     onApprove: function(data, actions) {
       return actions.order.capture().then(function(details) {
-        // Marquer comme premium
         setPremium(true);
-        
-        // Fermer la modale
         hidePaymentModal();
-        
-        // Afficher la notification de succès
         showSuccessNotification();
-        
-        // Mettre à jour l'interface
         checkPremiumStatus();
       });
     }
-  }).render('#paypal-button-container');
-}
-
-function showSuccessNotification() {
-  const notification = document.getElementById('successNotification');
-  notification.classList.add('show');
-  
-  setTimeout(() => {
-    notification.classList.remove('show');
-  }, 3000);
+  }).render('#paypal-button-container'); // ✅ bouton PayPal dans la modale
 }
 
 // Gestion des favoris (code original)
