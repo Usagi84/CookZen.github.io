@@ -35,7 +35,7 @@
       display: none;
     }
 
-        .pay-btn2 {
+    .pay-btn2 {
       position: fixed;
       top: 65%;
       left: 65%;
@@ -54,6 +54,34 @@
     
     body.blurred .pay-btn {
       display: block;
+    }
+
+    /* Container pour le bouton PayPal permanent */
+    .permanent-paypal-container {
+      position: fixed;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 101;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      min-width: 300px;
+    }
+
+    .permanent-paypal-container h3 {
+      margin: 0 0 15px 0;
+      color: #db3131;
+      font-size: 18px;
+    }
+
+    .permanent-paypal-container .price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin: 10px 0;
     }
 
     /* Tout le reste IDENTIQUE à l'original */
@@ -274,150 +302,6 @@
       background: #f1f1f1;
     }
 
-    /* Styles pour l'overlay de paiement */
-    .payment-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .payment-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .payment-modal {
-      background: white;
-      padding: 40px;
-      border-radius: 15px;
-      text-align: center;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
-    }
-
-    .payment-overlay.active .payment-modal {
-      transform: translateY(0);
-    }
-
-    .payment-modal h2 {
-      color: #db3131;
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
-
-    .payment-modal p {
-      color: #666;
-      margin-bottom: 20px;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .price-box {
-      background: linear-gradient(135deg, #db3131, #ff4757);
-      color: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin: 20px 0;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(219, 49, 49, 0.3);
-    }
-
-    .price-box .original-price {
-      font-size: 16px;
-      text-decoration: line-through;
-      opacity: 0.8;
-      margin-bottom: 5px;
-    }
-
-    .price-box .current-price {
-      font-size: 32px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .price-box .limited-offer {
-      font-size: 12px;
-      background: rgba(255,255,255,0.2);
-      padding: 5px 15px;
-      border-radius: 20px;
-      display: inline-block;
-      margin-top: 10px;
-    }
-
-    .features-list {
-      text-align: left;
-      margin: 20px 0;
-      background: #f8f9ff;
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 4px solid #db3131;
-    }
-
-    .features-list h3 {
-      color: #db3131;
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
-
-    .features-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .features-list li {
-      padding: 8px 0;
-      color: #333;
-      position: relative;
-      padding-left: 25px;
-    }
-
-    .features-list li::before {
-      content: "✅";
-      position: absolute;
-      left: 0;
-      top: 8px;
-    }
-
-    .payment-methods {
-      margin: 20px 0 10px 0;
-      text-align: center;
-    }
-
-    .payment-methods p {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 15px;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #999;
-    }
-
-    .close-modal:hover {
-      color: #333;
-    }
-
     /* Status premium */
     .premium-status {
       position: fixed;
@@ -461,7 +345,13 @@
     }
 
     #paypal-button-container {
-      margin-top: 20px;
+      margin-top: 15px;
+      min-height: 45px;
+    }
+
+    /* Masquer le container PayPal quand premium */
+    body:not(.blurred) .permanent-paypal-container {
+      display: none;
     }
   </style>
   <!-- SDK PayPal -->
@@ -475,7 +365,14 @@
 
 <div class="barre"></div>
 
-  <div class="pay-btn">Acheter</div>
+<button class="pay-btn">Acheter</button>
+
+<!-- Container PayPal permanent -->
+<div class="permanent-paypal-container">
+  <h3>🔓 Débloquer toutes les recettes</h3>
+  <div class="price">0,99€ seulement</div>
+  <div id="paypal-button-container"></div>
+</div>
   
 <!-- Status premium -->
 <div class="premium-status" id="premiumStatus">
@@ -485,7 +382,7 @@
 <!-- Bottom Navigation (non floutée) -->
 <div class="bottom-nav">
   <a class="nav-btn" href="index.html">🏠</a>
-  <a class="nav-btn" href="#" onclick="showPaymentModal()">🔒</a>
+  <a class="nav-btn" href="premium.html" onclick="showMessage()">🔒</a>
   <a class="nav-btn" href="favoris.html">❤️</a>
   <a class="nav-btn" href="parametres.html">⚙️</a>
 </div>
@@ -884,10 +781,7 @@
   </div>
   </div>
 
-<!-- Overlay de paiement -->
-
 <!-- Notification de succès -->
-  
 <div class="success-notification" id="successNotification">
   ✅ Paiement réussi ! Bienvenue dans CookZen Premium !
 </div>
@@ -912,21 +806,16 @@ function checkPremiumStatus() {
   }
 }
 
-// Gestion des modales
-function showPaymentModal() {
+// Fonction pour afficher un message quand on est déjà premium
+function showMessage() {
   if (isPremium()) {
     alert('Vous avez déjà accès au contenu premium ! 🎉');
-    return;
+  } else {
+    alert('Utilisez le bouton PayPal pour débloquer le contenu premium ! 💳');
   }
-  document.getElementById('paymentOverlay').classList.add('active');
-  initPayPalButton();
 }
 
-function hidePaymentModal() {
-  document.getElementById('paymentOverlay').classList.remove('active');
-}
-
-// Initialisation du bouton PayPal
+// Initialisation du bouton PayPal permanent
 function initPayPalButton() {
   // Vider le conteneur au cas où il y aurait déjà un bouton
   document.getElementById('paypal-button-container').innerHTML = '';
@@ -936,7 +825,8 @@ function initPayPalButton() {
       color: 'blue',
       shape: 'rect',
       label: 'paypal',
-      layout: 'vertical'
+      layout: 'vertical',
+      height: 40
     },
     createOrder: function(data, actions) {
       return actions.order.create({
@@ -952,15 +842,16 @@ function initPayPalButton() {
         // Marquer comme premium
         setPremium(true);
         
-        // Fermer la modale
-        hidePaymentModal();
-        
         // Afficher la notification de succès
         showSuccessNotification();
         
         // Mettre à jour l'interface
         checkPremiumStatus();
       });
+    },
+    onError: function(err) {
+      console.error('Erreur PayPal:', err);
+      alert('Erreur lors du paiement. Veuillez réessayer.');
     }
   }).render('#paypal-button-container');
 }
@@ -974,8 +865,6 @@ function showSuccessNotification() {
   }, 3000);
 }
 
-            <div id="paypal-button-container"></div>
-  
 // Gestion des favoris (code original)
 function getFavoris() {
   const favoris = localStorage.getItem('favoris');
@@ -1005,7 +894,7 @@ function setupHearts() {
   document.querySelectorAll('.heart').forEach(heart => {
     heart.addEventListener('click', () => {
       if (!isPremium()) {
-        showPaymentModal();
+        alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
         return;
       }
       
@@ -1027,7 +916,7 @@ function setupHearts() {
 
 function filterRecipes() {
   if (!isPremium()) {
-    showPaymentModal();
+    alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
     return;
   }
   
@@ -1046,7 +935,7 @@ function filterRecipes() {
 
 function afficheRecette(id) {
   if (!isPremium()) {
-    showPaymentModal();
+    alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
     return;
   }
 
@@ -1062,6 +951,9 @@ function afficheRecette(id) {
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialiser le bouton PayPal dès le chargement
+  initPayPalButton();
+  
   checkPremiumStatus();
   updateHearts();
   setupHearts();
@@ -1070,7 +962,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('searchInput').addEventListener('focus', () => {
     if (!isPremium()) {
       document.getElementById('searchInput').blur();
-      showPaymentModal();
+      alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
     }
   });
 
@@ -1087,19 +979,19 @@ if (savedTheme) {
   document.body.className = savedTheme;
 }
 
-// Fermer la modale en cliquant en dehors
-document.getElementById('paymentOverlay').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('paymentOverlay')) {
-    hidePaymentModal();
-  }
-});
-
 // TEST : Fonction pour réinitialiser le statut premium (à enlever en production)
 function resetPremium() {
   localStorage.removeItem('cookzenPremium');
   checkPremiumStatus();
+  // Réinitialiser le bouton PayPal après reset
+  setTimeout(() => {
+    initPayPalButton();
+  }, 100);
   console.log('Statut premium réinitialisé');
 }
+
+// TEST : Forcer le statut non-premium au début (à enlever en production)
+// localStorage.removeItem('cookzenPremium');
 
 </script>
 
