@@ -783,7 +783,7 @@
 
 <!-- Notification de succès -->
 <div class="success-notification" id="successNotification">
-  ✅ Paiement réussi ! Bienvenue dans CookZen Premium !
+  ✅ Paiement réussi !
 </div>
 
 <script>
@@ -803,15 +803,6 @@ function checkPremiumStatus() {
   } else {
     document.getElementById('premiumStatus').classList.remove('active');
     document.body.classList.add('blurred');
-  }
-}
-
-// Fonction pour afficher un message quand on est déjà premium
-function showMessage() {
-  if (isPremium()) {
-    alert('Vous avez déjà accès au contenu premium ! 🎉');
-  } else {
-    alert('Utilisez le bouton PayPal pour débloquer le contenu premium ! 💳');
   }
 }
 
@@ -894,7 +885,7 @@ function setupHearts() {
   document.querySelectorAll('.heart').forEach(heart => {
     heart.addEventListener('click', () => {
       if (!isPremium()) {
-        alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
+        alert('🔒 Fonctionnalité premium ! Acheter pour débloquer.');
         return;
       }
       
@@ -916,7 +907,7 @@ function setupHearts() {
 
 function filterRecipes() {
   if (!isPremium()) {
-    alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
+    alert('🔒 Fonctionnalité premium ! Acheter pour débloquer.');
     return;
   }
   
@@ -935,7 +926,7 @@ function filterRecipes() {
 
 function afficheRecette(id) {
   if (!isPremium()) {
-    alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
+    alert('🔒 Fonctionnalité premium ! Acheter pour débloquer.');
     return;
   }
 
@@ -962,7 +953,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('searchInput').addEventListener('focus', () => {
     if (!isPremium()) {
       document.getElementById('searchInput').blur();
-      alert('🔒 Fonctionnalité premium ! Utilisez le bouton PayPal pour débloquer.');
+      alert('🔒 Fonctionnalité premium ! Acheter pour débloquer.');
     }
   });
 
