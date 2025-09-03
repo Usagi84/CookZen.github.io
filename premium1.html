@@ -480,8 +480,6 @@
   ✨ PREMIUM ACTIF
 </div>
 
-      <div id="paypal-button-container"></div>
-
 <!-- Bottom Navigation (non floutée) -->
 <div class="bottom-nav">
   <a class="nav-btn" href="index.html">🏠</a>
@@ -901,6 +899,8 @@ function setPremium(status) {
   localStorage.setItem('cookzenPremium', status.toString());
 }
 
+        <div id="paypal-button-container"></div>
+  
 function checkPremiumStatus() {
   if (isPremium()) {
     document.getElementById('premiumStatus').classList.add('active');
