@@ -35,6 +35,23 @@
       display: none;
     }
 
+        .pay-btn2 {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #db3131;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 100;
+      display: none;
+    }
+    
     body.blurred .pay-btn {
       display: block;
     }
@@ -467,7 +484,7 @@
 <button class="pay-btn" onclick="showPaymentModal()">
   Débloquer pour 0,99€
 </button>
-      <div id="paypal-button-container" class="pay-btn"></div>
+      <div id="paypal-button-container" class="pay-btn2"></div>
 
 <!-- Bottom Navigation (non floutée) -->
 <div class="bottom-nav">
