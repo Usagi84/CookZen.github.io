@@ -475,6 +475,9 @@
 
 <div class="barre"></div>
 
+  <button class="pay-btn">Acheter</button>
+        <div id="paypal-button-container"></div>
+  
 <!-- Status premium -->
 <div class="premium-status" id="premiumStatus">
   ✨ PREMIUM ACTIF
@@ -898,8 +901,6 @@ function isPremium() {
 function setPremium(status) {
   localStorage.setItem('cookzenPremium', status.toString());
 }
-
-        <div id="paypal-button-container"></div>
   
 function checkPremiumStatus() {
   if (isPremium()) {
