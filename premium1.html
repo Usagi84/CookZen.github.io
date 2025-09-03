@@ -887,7 +887,6 @@
 <!-- Overlay de paiement -->
 
 <!-- Notification de succès -->
-          <div id="paypal-button-container"></div>
   
 <div class="success-notification" id="successNotification">
   ✅ Paiement réussi ! Bienvenue dans CookZen Premium !
@@ -975,6 +974,8 @@ function showSuccessNotification() {
   }, 3000);
 }
 
+            <div id="paypal-button-container"></div>
+  
 // Gestion des favoris (code original)
 function getFavoris() {
   const favoris = localStorage.getItem('favoris');
