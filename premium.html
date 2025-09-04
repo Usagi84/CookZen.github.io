@@ -334,6 +334,21 @@
       min-height: 45px;
     }
 
+        /* Status premium */
+    .premium-status {
+      position: fixed;
+      top: 140px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 15;
+      display: none;
+    }
+
     /* Masquer le container PayPal quand premium */
     body:not(.blurred) .permanent-paypal-container {
       display: none;
@@ -357,6 +372,11 @@
   <h3>🔓 Débloquer toutes les recettes</h3>
   <div class="price">0,99€ seulement</div>
   <div id="paypal-button-container"></div>
+</div>
+
+    <!-- Status premium -->
+<div class="premium-status" id="premiumStatus">
+  ✨ PREMIUM ACTIF
 </div>
   
 <!-- Bottom Navigation (non floutée) -->
